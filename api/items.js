@@ -26,6 +26,7 @@ module.exports = async function handler(req, res) {
 
   // POST — add new item
   if (req.method === 'POST') {
+    console.log("WHAT THE PUSH")
     try {
       const newItem = new Item(req.body);
       await newItem.save();
@@ -34,6 +35,9 @@ module.exports = async function handler(req, res) {
       console.error("Error adding item:", err);
       return res.status(500).json({ error: "Error adding item" });
     }
+  }
+  if(req.method === 'PUT'){
+    console.log("WHAT THE PUT")
   }
 
   // DELETE — remove an item
