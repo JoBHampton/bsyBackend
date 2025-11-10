@@ -1,18 +1,13 @@
 {
   "version": 2,
   "builds": [
-    { "src": "api/users.js", "use": "@vercel/node" },
-    { "src": "api/items.js", "use": "@vercel/node" },
-    { "src": "api/favorites.js", "use": "@vercel/node" },
-    { "src": "api/itenerary.js", "use": "@vercel/node" },
-    { "src": "api/pricing.js", "use": "@vercel/node" }
+    { "src": "api/**/*.js", "use": "@vercel/node" }
   ],
   "routes": [
     { "src": "/api/users", "dest": "/api/users.js" },
     { "src": "/api/items", "dest": "/api/items.js" },
     { "src": "/api/favorites", "dest": "/api/favorites.js" },
     { "src": "/api/itenerary", "dest": "/api/itenerary.js" },
-    { "src" : "/api/pricing", "dest": "/api/pricing.js" }
+    { "src": "/api/pricing", "dest": "/api/pricing.js" }
   ]
-
 }

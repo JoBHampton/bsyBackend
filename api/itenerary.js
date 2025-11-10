@@ -1,9 +1,11 @@
 const connectDB = require('../backend/newDatabaseTest');
 const Itenerary = require('../backend/Itenerary');
+const corsMiddleware = require('../lib/corsMiddleware');
 
 module.exports = async function handler(req, res) {
-
+  // Handle CORS
   if (corsMiddleware(req, res)) return;
+
 
   await connectDB();
 

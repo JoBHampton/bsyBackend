@@ -1,7 +1,10 @@
 const connectDB = require('../backend/newDatabaseTest');
 const User = require('../backend/User');
+const corsMiddleware = require('../lib/corsMiddleware');
 
 module.exports = async function handler(req, res) {
+  // Handle CORS
+  if (corsMiddleware(req, res)) return;
 
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', 'https://garussell1.github.io');

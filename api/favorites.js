@@ -3,16 +3,8 @@ const FavTable = require('../backend/FavTable');
 const corsMiddleware = require('../lib/corsMiddleware');
 
 module.exports = async function handler(req, res) {
-
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', 'https://garussell1.github.io');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-  // Handle preflight
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+  // Handle CORS
+  if (corsMiddleware(req, res)) return;
 
 
   await connectDB();

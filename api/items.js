@@ -1,16 +1,10 @@
 const connectDB = require('../backend/newDatabaseTest');
 const Item = require('../backend/newSchema');
+const corsMiddleware = require('../lib/corsMiddleware');
 
 module.exports = async function handler(req, res) {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', 'https://garussell1.github.io');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-  // Handle preflight
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+  // Handle CORS
+  if (corsMiddleware(req, res)) return;
 
   await connectDB();
 
@@ -26,18 +20,31 @@ module.exports = async function handler(req, res) {
 
   // POST — add new item
   if (req.method === 'POST') {
-    console.log("WHAT THE PUSH")
+    console.log("POST request received:", req.body);
     try {
       const newItem = new Item(req.body);
       await newItem.save();
       return res.status(201).json(newItem);
     } catch (err) {
       console.error("Error adding item:", err);
-      return res.status(500).json({ error: "Error adding item" });
+      return res.status(500).json({ error: "Error adding item", details: err.message });
     }
   }
-  if(req.method === 'PUT'){
-    console.log("WHAT THE PUT")
+
+  // PUT — update an item
+  if (req.method === 'PUT') {
+    console.log("PUT request received");
+    try {
+      const { id } = req.query;
+      const updatedItem = await Item.findByIdAndUpdate(id, req.body, { new: true });
+      if (!updatedItem) {
+        return res.status(404).json({ error: "Item not found" });
+      }
+      return res.status(200).json(updatedItem);
+    } catch (err) {
+      console.error("Error updating item:", err);
+      return res.status(500).json({ error: "Error updating item", details: err.message });
+    }
   }
 
   // DELETE — remove an item
