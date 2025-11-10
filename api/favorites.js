@@ -2,6 +2,13 @@ const connectDB = require('../backend/newDatabaseTest');
 const FavTable = require('../backend/FavTable');
 
 module.exports = async function handler(req, res) {
+
+  // Add CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*'); // or specify your frontend URL
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  
   await connectDB();
 
   if (req.method === 'GET') {
