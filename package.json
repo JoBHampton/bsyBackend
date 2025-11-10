@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "mongoose": "^7.0.0"
+    "mongoose": "^8.18.1",
+    "@google/generative-ai": "^0.21.0"
   },
   "engines": {
     "node": ">=18.x"
