@@ -1,26 +1,39 @@
-// /api/users.js
-import { getDb } from "../lib/mongo.js";
+const connectDB = require('../backend/newDatabaseTest');
+const User = require('../backend/User');
 
-function getQueryParam(req, key) {
-  const url = new URL(req.url, `http://${req.headers.host}`);
-  return url.searchParams.get(key);
-}
+module.exports = async function handler(req, res) {
+  await connectDB();
 
-export default async function handler(req, res) {
-  try {
-    const db = await getDb();
-    const coll = getQueryParam(req, "col") || "users";
-    const col = db.collection(coll);
-
-    if (req.method === "GET") {
-      const docs = await col.find({}).limit(200).toArray();
-      return res.status(200).json(docs);
+  if (req.method === 'GET') {
+    try {
+      const users = await User.find();
+      return res.status(200).json(users);
+    } catch (err) {
+      console.error("Error fetching users:", err);
+      return res.status(500).json({ error: "Server error" });
     }
-
-    res.setHeader("Allow", "GET");
-    return res.status(405).end("Method Not Allowed");
-  } catch (e) {
-    console.error(e);
-    return res.status(500).json({ error: String(e) });
   }
-}
+
+  if (req.method === 'POST') {
+    try {
+      const { user_id, oauth_sub, name, email, onboarded } = req.body;
+
+      if (!user_id || !oauth_sub || !name || !email || onboarded === undefined) {
+        return res.status(400).json({ error: "Missing fields" });
+      }
+
+      const existing = await User.findOne({ user_id });
+      if (existing) return res.status(409).json({ message: "Already exists" });
+
+      const newUser = new User({ user_id, oauth_sub, name, email, onboarded });
+      await newUser.save();
+
+      return res.status(201).json(newUser);
+    } catch (err) {
+      console.error("Error adding user:", err);
+      return res.status(500).json({ error: "Server error" });
+    }
+  }
+
+  return res.status(405).json({ error: "Method not allowed" });
+};

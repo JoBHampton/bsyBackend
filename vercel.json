@@ -1,9 +1,9 @@
 {
   "version": 2,
   "builds": [
-    { "src": "backend/api/index.js", "use": "@vercel/node" }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/backend/api/index.js" }
+    { "src": "api/users.js", "use": "@vercel/node" },
+    { "src": "api/items.js", "use": "@vercel/node" },
+    { "src": "api/favorites.js", "use": "@vercel/node" },
+    { "src": "api/itenerary.js", "use": "@vercel/node" }
   ]
 }
