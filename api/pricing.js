@@ -5,7 +5,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 export default async function handler(req, res) {
   
   // Add CORS headers
-  res.setHeader('Access-Control-Allow-Origin', 'https://garussell1.github.io');
+  res.setHeader('Access-Control-Allow-Origin', 'https://garussell1.github.io/bigSpoonYum/');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   
