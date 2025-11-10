@@ -3,7 +3,7 @@ const User = require('../backend/User');
 
 module.exports = async function handler(req, res) {
 
-  // if (corsMiddleware(req, res)) return;
+  if (corsMiddleware(req, res)) return;
 
 
   await connectDB();
