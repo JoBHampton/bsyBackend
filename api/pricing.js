@@ -36,6 +36,14 @@ export default async function handler(req, res) {
     return res.status(200).json({ prices });
 
   } catch (error) {
+
+    if (error.status === 503) {
+      return res.status(503).json({ 
+        error: "AI service is temporarily unavailable. Please try again in a moment.",
+        retryable: true
+      });
+    }
+
     console.error("Error calling Google AI:", error);
     return res.status(500).json({ error: "Failed to fetch prices from AI." });
   }
