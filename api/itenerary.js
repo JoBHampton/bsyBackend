@@ -10,14 +10,26 @@ module.exports = async function handler(req, res) {
   await connectDB();
 
   if (req.method === 'GET') {
-    try {
-      const data = await Itenerary.find();
-      return res.status(200).json(data);
-    } catch (err) {
-      console.error("Error fetching itenerary:", err);
-      return res.status(500).json({ error: "Server error" });
+  try {
+    const { id } = req.query;
+    
+    // If ID is provided, fetch single itinerary
+    if (id) {
+      const itinerary = await Itenerary.findById(id);
+      if (!itinerary) {
+        return res.status(404).json({ error: "Itinerary not found" });
+      }
+      return res.status(200).json(itinerary);
     }
+    
+    // Otherwise fetch all
+    const data = await Itenerary.find();
+    return res.status(200).json(data);
+  } catch (err) {
+    console.error("Error fetching itenerary:", err);
+    return res.status(500).json({ error: "Server error" });
   }
+}
 
   if (req.method === 'POST') {
     try {

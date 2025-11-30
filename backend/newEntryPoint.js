@@ -134,6 +134,11 @@ app.post("/users", async(req, res) => {
   }
 });
 
+// Add an Itinerary
+// app.post("/itenerary", async(req,res) => {
+//   if (!)
+// })
+
 // Remove a favorite
 app.delete("/favorites", async (req, res) => {
   try {
